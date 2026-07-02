@@ -1,0 +1,128 @@
+{
+  "timestamp": "2026-11-05T21:46:28.558901",
+  "input_file": "data/corrupt/orders_vendor_renamed_drift.csv",
+  "rows_evaluated": 2500,
+  "is_valid": false,
+  "actual_columns": [
+    "order_id",
+    "customer_id",
+    "status",
+    "purchase_date",
+    "order_approved_at",
+    "order_delivered_carrier_date",
+    "order_delivered_customer_date",
+    "order_estimated_delivery_date",
+    "vendor_internal_code"
+  ],
+  "expected_columns": [
+    "order_id",
+    "customer_id",
+    "order_status",
+    "order_purchase_timestamp",
+    "order_approved_at",
+    "order_delivered_carrier_date",
+    "order_delivered_customer_date",
+    "order_estimated_delivery_date"
+  ],
+  "missing_columns": [
+    "order_status",
+    "order_purchase_timestamp"
+  ],
+  "extra_columns": [
+    "status",
+    "purchase_date",
+    "vendor_internal_code"
+  ],
+  "failures": [
+    {
+      "expectation": "expect_column_values_to_not_be_null",
+      "details": {
+        "column": "order_status",
+        "batch_id": "incoming_feed_source-orders_batch_asset"
+      },
+      "observed": {}
+    },
+    {
+      "expectation": "expect_column_values_to_be_in_set",
+      "details": {
+        "column": "order_status",
+        "value_set": [
+          "delivered",
+          "shipped",
+          "invoiced",
+          "processing",
+          "approved",
+          "canceled",
+          "unavailable"
+        ],
+        "batch_id": "incoming_feed_source-orders_batch_asset"
+      },
+      "observed": {}
+    },
+    {
+      "expectation": "expect_column_values_to_not_be_null",
+      "details": {
+        "column": "order_purchase_timestamp",
+        "batch_id": "incoming_feed_source-orders_batch_asset"
+      },
+      "observed": {}
+    },
+    {
+      "expectation": "expect_column_values_to_match_regex",
+      "details": {
+        "column": "order_purchase_timestamp",
+        "regex": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}$",
+        "batch_id": "incoming_feed_source-orders_batch_asset"
+      },
+      "observed": {}
+    },
+    {
+      "expectation": "expect_table_columns_to_match_ordered_list",
+      "details": {
+        "batch_id": "incoming_feed_source-orders_batch_asset",
+        "column_list": [
+          "order_id",
+          "customer_id",
+          "order_status",
+          "order_purchase_timestamp",
+          "order_approved_at",
+          "order_delivered_carrier_date",
+          "order_delivered_customer_date",
+          "order_estimated_delivery_date"
+        ]
+      },
+      "observed": {
+        "observed_value": [
+          "order_id",
+          "customer_id",
+          "status",
+          "purchase_date",
+          "order_approved_at",
+          "order_delivered_carrier_date",
+          "order_delivered_customer_date",
+          "order_estimated_delivery_date",
+          "vendor_internal_code"
+        ],
+        "details": {
+          "mismatched": [
+            {
+              "Expected Column Position": 2,
+              "Expected": "order_status",
+              "Found": "status"
+            },
+            {
+              "Expected Column Position": 3,
+              "Expected": "order_purchase_timestamp",
+              "Found": "purchase_date"
+            },
+            {
+              "Expected Column Position": 8,
+              "Expected": null,
+              "Found": "vendor_internal_code"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
