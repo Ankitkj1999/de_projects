@@ -1,0 +1,44 @@
+clients:
+  - client_id: "acme_retail"
+    display_name: "ACME Retail Enterprise"
+    schedule: "@daily"
+    source_path: "data/processed/airflow/clients/acme_retail/orders.csv"
+    target_table: "client_orders_acme_retail"
+    min_row_threshold: 100
+    max_price_ceiling: 5000.0
+    sla_minutes: 30
+    notify_channel: "#de-acme-alerts"
+    owner: "enterprise-de"
+
+  - client_id: "globex_ecom"
+    display_name: "Globex Global E-Commerce"
+    schedule: "@daily"
+    source_path: "data/processed/airflow/clients/globex_ecom/orders.csv"
+    target_table: "client_orders_globex_ecom"
+    min_row_threshold: 400
+    max_price_ceiling: 10000.0
+    sla_minutes: 45
+    notify_channel: "#de-globex-alerts"
+    owner: "enterprise-de"
+
+  - client_id: "initech_shop"
+    display_name: "Initech B2B Marketplace"
+    schedule: "0 4 * * *"
+    source_path: "data/processed/airflow/clients/initech_shop/orders.csv"
+    target_table: "client_orders_initech_shop"
+    min_row_threshold: 50
+    max_price_ceiling: 2500.0
+    sla_minutes: 20
+    notify_channel: "#de-initech-alerts"
+    owner: "growth-de"
+
+  - client_id: "umbrella_mart"
+    display_name: "Umbrella Corporation Superstore"
+    schedule: "@daily"
+    source_path: "data/processed/airflow/clients/umbrella_mart/orders.csv"
+    target_table: "client_orders_umbrella_mart"
+    min_row_threshold: 250
+    max_price_ceiling: 8000.0
+    sla_minutes: 60
+    notify_channel: "#de-umbrella-alerts"
+    owner: "strategic-accounts"
