@@ -1,0 +1,29 @@
+[
+  {
+    "run_id": "scheduled__2024-01-15T00:00:00",
+    "logical_date": "2024-01-15",
+    "rows_loaded": 200,
+    "total_partition_rows": 200,
+    "is_backfill": false,
+    "timestamp": "2026-11-07T15:18:08.711111+00:00",
+    "status": "COMMITTED"
+  },
+  {
+    "run_id": "backfill__manual__2024-01-15",
+    "logical_date": "2024-01-15",
+    "rows_loaded": 200,
+    "total_partition_rows": 200,
+    "is_backfill": true,
+    "timestamp": "2026-11-07T15:18:08.720314+00:00",
+    "status": "COMMITTED"
+  },
+  {
+    "run_id": "scheduled__2024-01-16T00:00:00",
+    "logical_date": "2024-01-16",
+    "rows_loaded": 200,
+    "total_partition_rows": 200,
+    "is_backfill": false,
+    "timestamp": "2026-11-07T15:18:08.728974+00:00",
+    "status": "COMMITTED"
+  }
+]
