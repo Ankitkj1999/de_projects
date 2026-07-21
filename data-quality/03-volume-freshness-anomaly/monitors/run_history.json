@@ -1,0 +1,44 @@
+[
+  {
+    "run_id": "run_prod_20261029",
+    "timestamp": "2026-10-29 21:37:09",
+    "row_count": 2480,
+    "status": "SUCCESS"
+  },
+  {
+    "run_id": "run_prod_20261030",
+    "timestamp": "2026-10-30 21:37:09",
+    "row_count": 2520,
+    "status": "SUCCESS"
+  },
+  {
+    "run_id": "run_prod_20261031",
+    "timestamp": "2026-10-31 21:37:09",
+    "row_count": 2465,
+    "status": "SUCCESS"
+  },
+  {
+    "run_id": "run_prod_20261101",
+    "timestamp": "2026-11-01 21:37:09",
+    "row_count": 2510,
+    "status": "SUCCESS"
+  },
+  {
+    "run_id": "run_prod_20261102",
+    "timestamp": "2026-11-02 21:37:09",
+    "row_count": 2495,
+    "status": "SUCCESS"
+  },
+  {
+    "run_id": "run_prod_20261103",
+    "timestamp": "2026-11-03 21:37:09",
+    "row_count": 2540,
+    "status": "SUCCESS"
+  },
+  {
+    "run_id": "run_prod_20261104",
+    "timestamp": "2026-11-04 21:37:09",
+    "row_count": 2505,
+    "status": "SUCCESS"
+  }
+]
