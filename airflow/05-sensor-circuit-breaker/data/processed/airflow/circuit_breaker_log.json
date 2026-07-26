@@ -1,0 +1,16 @@
+[
+  {
+    "event": "CIRCUIT_BREAKER_TRIPPED",
+    "logical_date": "2024-01-16",
+    "reason": "SENSOR_TIMEOUT_MISSING_SUCCESS_MARKER",
+    "state": "OPEN",
+    "details": {
+      "found": false,
+      "marker_path": "/home/ankit/Documents/Code/Projects/de_projects/airflow/05-sensor-circuit-breaker/data/processed/airflow/landing/_SUCCESS_2024-01-16",
+      "waited_seconds": 3,
+      "timed_out": true,
+      "metadata": {}
+    },
+    "timestamp": "2026-11-07T15:18:08.950481+00:00"
+  }
+]
