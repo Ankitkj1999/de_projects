@@ -1,50 +1,63 @@
-# Production Data Quality Engineering with Great Expectations
+# Production Data Engineering Portfolio: Data Quality & Apache Airflow
 
-[![Data Quality CI](https://img.shields.io/badge/CI%2FCD-GitHub%20Actions-blue.svg)](.github/workflows/data_quality_ci.yml)
+[![Data Engineering CI](https://img.shields.io/badge/CI%2FCD-GitHub%20Actions-blue.svg)](.github/workflows/data_quality_ci.yml)
+[![Apache Airflow](https://img.shields.io/badge/Orchestration-Apache%20Airflow-017CEE.svg)](https://airflow.apache.org)
 [![Great Expectations](https://img.shields.io/badge/Great%20Expectations-1.24.1-orange.svg)](https://greatexpectations.io)
 [![Delta Lake](https://img.shields.io/badge/Storage-Delta%20Lake-00A4E4.svg)](https://delta.io)
 [![Python 3.12](https://img.shields.io/badge/Python-3.12-3776AB.svg)](https://python.org)
-[![Tests Passing](https://img.shields.io/badge/Tests-24%20Passing-brightgreen.svg)](#test-suite-results)
+[![Tests Passing](https://img.shields.io/badge/Tests-59%20Passing-brightgreen.svg)](#test-suite-results)
 
-An end-to-end, production-grade Data Quality engineering portfolio solving the 5 most critical data degradation failure modes encountered in enterprise data platforms (Databricks, AWS Glue, Snowflake, BigQuery, dbt).
+An end-to-end, production-grade Data Engineering portfolio featuring **10 enterprise problem-solving implementations**:
+- **5 Data Quality Engineering projects** built on Great Expectations & Delta Lake
+- **5 Apache Airflow Problem-Solving projects** tackling real-world orchestration, multi-tenancy, idempotency, and SLA failures
 
-Built on top of a realistic **Brazilian E-Commerce (Olist)** dataset with reproducible, injected real-world corruptions.
-
----
-
-## The 5 Data Quality Projects Overview
-
-```
-                                  INCOMING DATA FEEDS
-                                           │
-  ┌────────────────────────────────────────┼────────────────────────────────────────┐
-  │                                        │                                        │
-  ▼                                        ▼                                        ▼
-┌─────────────────────────┐  ┌─────────────────────────┐  ┌─────────────────────────┐
-│ Project 1: Schema Drift │  │ Project 2: Biz Rules    │  │ Project 3: Volume &     │
-│ Pre-Bronze Ingestion    │  │ Semantic Integrity      │  │ Freshness Anomalies     │
-│ Gate (Columns, Order,   │  │ FK Catalog Checks,      │  │ Rolling 7-Day Baseline, │
-│ Enums, Types)           │  │ Totals, No Future Dates │  │ Hard Fail vs Warning    │
-└────────────┬────────────┘  └────────────┬────────────┘  └────────────┬────────────┘
-             │                            │                            │
-             └─────────────────────┬──────┴────────────────────────────┘
-                                   │
-                                   ▼
-┌───────────────────────────────────────────────────────────────────────────────────┐
-│ Project 4: High-Volume Bronze → Silver Delta Lake Quarantine Pattern              │
-│ Splits valid vs invalid rows • Writes Rejects to Delta with Reason • Circuit Breaker│
-└──────────────────────────────────┬────────────────────────────────────────────────┘
-                                   │
-                                   ▼
-┌───────────────────────────────────────────────────────────────────────────────────┐
-│ Project 5: Cold-Start Profiling, Curated Suites, Data Docs & Alerting Webhooks    │
-│ Scans 200 Untested Tables • Prunes Brittle Rules • Publishes Docs • Slack/Cliq CI │
-└───────────────────────────────────────────────────────────────────────────────────┘
-```
+Built on top of a realistic **Brazilian E-Commerce (Olist)** dataset with reproducible scenarios.
 
 ---
 
-## Projects Detailed Matrix
+## Part 1: The 5 Apache Airflow Problem-Solving Projects
+
+```
+                     AIRFLOW ENTERPRISE ORCHESTRATION
+                                    │
+  ┌─────────────────────────────────┼─────────────────────────────────┐
+  │                                 │                                 │
+  ▼                                 ▼                                 ▼
+┌─────────────────────────┐ ┌─────────────────────────┐ ┌─────────────────────────┐
+│ Project 1: Retry-Aware  │ │ Project 2: Dynamic DAG   │ │ Project 3: SLA-Monitored│
+│ ETL + Dead Letter Queue │ │ Factory (Multi-Tenant)   │ │ Financial Revenue Report│
+│ Exponential Backoff API │ │ Declarative YAML Config  │ │ Freshness ShortCircuit  │
+│ Staging vs DLQ Split    │ │ Auto-compiled globals()  │ │ Task SLA Miss Callbacks │
+└────────────┬────────────┘ └───────────┬──────────────┘ └────────────┬────────────┘
+             │                          │                             │
+             └──────────────────┬───────┴─────────────────────────────┘
+                                │
+                                ▼
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│ Project 4: Backfill-Safe Idempotent Partition Loader (UPSERT & {{ ds }} Macros) │
+│ Re-running historical dates never duplicates rows • Automated Lineage Ledger    │
+└───────────────────────────────────────┬─────────────────────────────────────────┘
+                                        │
+                                        ▼
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│ Project 5: Event-Driven Sensor Pipeline with Circuit Breaker Pattern            │
+│ Atomic _SUCCESS Marker • SHA-256 Checksum Validation • Graceful Soft-Fail Skips │
+└─────────────────────────────────────────────────────────────────────────────────┘
+```
+
+### Airflow Projects Matrix
+
+| # | Project Name & Scenario | Problem Solved | Key Airflow & Engineering Patterns | Stack |
+|---|-------------------------|----------------|------------------------------------|-------|
+| **1** | [**Retry-Aware ETL + Dead Letter Queue**](file:///home/ankit/Documents/Code/Projects/de_projects/airflow/01-retry-etl-dead-letter-queue) <br> *"The API timed out at 3 AM and nobody knew until the morning dashboard was blank"* | Upstream vendor APIs fail intermittently. Flaky network crashes monolithic DAGs, while corrupt rows poison analytics tables. | `retries=3`, `retry_exponential_backoff=True`<br>Stream splitting: Staging vs DLQ<br>SQLite DLQ store with root causes<br>Slack Block Kit Channel Alerting | Python 3.12, SQLite, Airflow DAG, Rich |
+| **2** | [**Dynamic DAG Factory for Multi-Tenant Clients**](file:///home/ankit/Documents/Code/Projects/de_projects/airflow/02-dynamic-dag-factory) <br> *"We onboard a new client every week and copy-pasting DAGs is becoming a nightmare"* | Onboarding 40 SaaS customers with duplicate DAGs causes configuration drift, template errors, and maintenance paralysis. | Declarative `clients.yaml` contract<br>Parse-time `globals()[dag_id]` compilation<br>Isolated tenant SQLite tables<br>Per-tenant SLAs and volume gates | PyYAML, Python Dynamic DAGs, SQLite |
+| **3** | [**SLA-Monitored Financial Report Pipeline**](file:///home/ankit/Documents/Code/Projects/de_projects/airflow/03-sla-finance-pipeline) <br> *"The CFO's daily revenue report sometimes shows yesterday's numbers — and nobody gets alerted"* | Stale upstream data silently generates erroneous financial figures; heavy aggregation queries hang without notifying on-call. | `ShortCircuitOperator` freshness gate<br>`DAG(sla_miss_callback=on_sla_miss)`<br>Task-level SLAs & `execution_timeout`<br>Audited JSON executive ledger | Airflow Operators, ShortCircuit, FX Normalization |
+| **4** | [**Backfill-Safe Idempotent Data Loader**](file:///home/ankit/Documents/Code/Projects/de_projects/airflow/04-idempotent-backfill-loader) <br> *"We re-ran last month's jobs and now every record is duplicated in the warehouse"* | Backfilling a month of history or manually re-running DAG runs with plain `INSERT` doubles row counts across warehouse tables. | Strict `{{ ds }}` logical date partitioning<br>Deterministic seeded extractors<br>SQLite UPSERT (`INSERT OR REPLACE`)<br>Automated idempotency assertions | SQLite, Airflow Date Macros, Lineage Ledger |
+| **5** | [**Event-Driven Sensor + Circuit Breaker**](file:///home/ankit/Documents/Code/Projects/de_projects/airflow/05-sensor-circuit-breaker) <br> *"Our pipeline starts processing before the upstream file is even fully uploaded"* | Fixed cron schedules begin processing while upstream files are still streaming bytes. Delayed files cause infinite sensor hangs. | Atomic `_SUCCESS_{ds}` marker pattern<br>SHA-256 cryptographic checksum matching<br>`BranchPythonOperator` Circuit Breaker<br>`soft_fail=True` slot conservation | Python FileSensor, SHA-256, Branching |
+
+---
+
+## Part 2: The 5 Data Quality Projects Overview
 
 | # | Project Name & Scenario | Problem Solved | Key Expectations & Patterns | Architecture & Stack |
 |---|-------------------------|----------------|-----------------------------|----------------------|
@@ -56,88 +69,39 @@ Built on top of a realistic **Brazilian E-Commerce (Olist)** dataset with reprod
 
 ---
 
-## Directory Structure
+## Quickstart: Running Demos & Test Suites
 
-```
-de_projects/
-├── .github/
-│   └── workflows/
-│       └── data_quality_ci.yml         # GitHub Actions CI check on PRs
-├── data/
-│   ├── generate_olist_data.py          # Synthetic high-fidelity Olist generator
-│   ├── inject_corruptions.py           # Injects 5 realistic failure scenarios
-│   ├── raw/                            # Clean baseline tables (orders, items, payments, etc.)
-│   ├── corrupt/                        # Corrupted feeds for testing
-│   └── processed/
-│       ├── bronze/                     # Gate-approved raw landing files
-│       └── delta/                      # Silver and Quarantine Delta Lake tables
-├── data-quality/
-│   ├── 01-schema-drift-gate/           # Project 1: Schema Drift Gate
-│   │   ├── src/schema_gate.py
-│   │   ├── tests/test_schema_drift.py
-│   │   ├── demo.py
-│   │   └── README.md
-│   ├── 02-business-rules-validator/    # Project 2: Business Semantic Rules
-│   │   ├── suites/ecommerce_rules.py
-│   │   ├── src/validator.py
-│   │   ├── tests/test_business_rules.py
-│   │   ├── demo.py
-│   │   └── README.md
-│   ├── 03-volume-freshness-anomaly/    # Project 3: Volume & Freshness Monitor
-│   │   ├── monitors/baseline_tracker.py
-│   │   ├── src/freshness_volume_gate.py
-│   │   ├── tests/test_volume_freshness.py
-│   │   ├── demo.py
-│   │   └── README.md
-│   ├── 04-delta-lake-quarantine/       # Project 4: Delta Lake Quarantine Pattern
-│   │   ├── src/quarantine_pipeline.py
-│   │   ├── notebooks/pyspark_quarantine_pipeline.py
-│   │   ├── tests/test_quarantine.py
-│   │   ├── demo.py
-│   │   └── README.md
-│   └── 05-automated-table-profiling/   # Project 5: Cold-Start Profiling & Alerts
-│       ├── profiler/auto_profiler.py
-│       ├── profiler/suite_pruner.py
-│       ├── src/data_docs_publisher.py
-│       ├── src/notifier.py
-│       ├── tests/test_profiler.py
-│       ├── demo.py
-│       └── README.md
-├── requirements.txt                    # Modern Python package dependencies
-├── run_all_demos.sh                    # Orchestrates all 5 live interactive demos
-└── README.md                           # Master portfolio documentation
+### 1. Run All 5 Airflow Demos
+```bash
+./run_all_airflow_demos.sh
 ```
 
----
-
-## Quickstart: Running Demos & Tests
-
-### 1. Run All 5 Interactive Demos in Sequence
+### 2. Run All 5 Data Quality Demos
 ```bash
 ./run_all_demos.sh
 ```
 
-### 2. Run Individual Project Demos
+### 3. Run Individual Airflow Project Demos
 ```bash
-# Project 1: Schema Drift
-.venv/bin/python data-quality/01-schema-drift-gate/demo.py
+# Project 1: Retry-Aware ETL + Dead Letter Queue
+.venv/bin/python airflow/01-retry-etl-dead-letter-queue/demo.py
 
-# Project 2: Business Rules
-.venv/bin/python data-quality/02-business-rules-validator/demo.py
+# Project 2: Dynamic DAG Factory
+.venv/bin/python airflow/02-dynamic-dag-factory/demo.py
 
-# Project 3: Volume & Freshness Anomaly
-.venv/bin/python data-quality/03-volume-freshness-anomaly/demo.py
+# Project 3: SLA-Monitored Finance Pipeline
+.venv/bin/python airflow/03-sla-finance-pipeline/demo.py
 
-# Project 4: Delta Lake Quarantine Engine
-.venv/bin/python data-quality/04-delta-lake-quarantine/demo.py
+# Project 4: Backfill-Safe Idempotent Loader
+.venv/bin/python airflow/04-idempotent-backfill-loader/demo.py
 
-# Project 5: Cold-Start Profiler & Data Docs
-.venv/bin/python data-quality/05-automated-table-profiling/demo.py
+# Project 5: Event-Driven Sensor & Circuit Breaker
+.venv/bin/python airflow/05-sensor-circuit-breaker/demo.py
 ```
 
-### 3. Run the Comprehensive Pytest Suite (24 Test Cases)
+### 4. Run the Full Pytest Suite (59 Test Cases Passing)
 ```bash
-.venv/bin/pytest data-quality/ -v
+.venv/bin/pytest -v
 ```
 
 ---
@@ -145,43 +109,15 @@ de_projects/
 ## Test Suite Results
 
 ```
-data-quality/01-schema-drift-gate/tests/test_schema_drift.py::test_clean_feed_passes_gate PASSED
-data-quality/01-schema-drift-gate/tests/test_schema_drift.py::test_renamed_column_fails_gate PASSED
-data-quality/01-schema-drift-gate/tests/test_schema_drift.py::test_illegal_status_fails_gate PASSED
-data-quality/01-schema-drift-gate/tests/test_schema_drift.py::test_missing_column_fails_gate PASSED
-data-quality/01-schema-drift-gate/tests/test_schema_drift.py::test_bronze_process_feed_flow PASSED
-
-data-quality/02-business-rules-validator/tests/test_business_rules.py::test_clean_data_passes_all_rules PASSED
-data-quality/02-business-rules-validator/tests/test_business_rules.py::test_catches_negative_price PASSED
-data-quality/02-business-rules-validator/tests/test_business_rules.py::test_catches_future_dated_orders PASSED
-data-quality/02-business-rules-validator/tests/test_business_rules.py::test_catches_temporal_causality_paradox PASSED
-data-quality/02-business-rules-validator/tests/test_business_rules.py::test_catches_phantom_sku_catalog_integrity PASSED
-data-quality/02-business-rules-validator/tests/test_business_rules.py::test_catches_duplicate_order_id PASSED
-data-quality/02-business-rules-validator/tests/test_business_rules.py::test_catches_order_total_mismatch PASSED
-
-data-quality/03-volume-freshness-anomaly/tests/test_volume_freshness.py::test_healthy_batch_passes PASSED
-data-quality/03-volume-freshness-anomaly/tests/test_volume_freshness.py::test_warning_level_on_minor_volume_dip PASSED
-data-quality/03-volume-freshness-anomaly/tests/test_volume_freshness.py::test_hard_fail_on_half_load_volume_collapse PASSED
-data-quality/03-volume-freshness-anomaly/tests/test_volume_freshness.py::test_hard_fail_on_stale_data PASSED
-data-quality/03-volume-freshness-anomaly/tests/test_volume_freshness.py::test_mostly_tolerance_allows_small_nulls_but_catches_spikes PASSED
-
-data-quality/04-delta-lake-quarantine/tests/test_quarantine.py::test_row_splitting_and_enrichment PASSED
-data-quality/04-delta-lake-quarantine/tests/test_quarantine.py::test_zero_data_loss_and_delta_write PASSED
-data-quality/04-delta-lake-quarantine/tests/test_quarantine.py::test_circuit_breaker_trips_on_excessive_corruption PASSED
-
-data-quality/05-automated-table-profiling/tests/test_profiler.py::test_profiler_discovers_schema_and_pk PASSED
-data-quality/05-automated-table-profiling/tests/test_profiler.py::test_pruner_filters_brittle_expectations PASSED
-data-quality/05-automated-table-profiling/tests/test_profiler.py::test_data_docs_publisher PASSED
-data-quality/05-automated-table-profiling/tests/test_profiler.py::test_notifier_payload_generation PASSED
-
-============================== 24 passed in 6.01s ==============================
+============================== 59 passed in 7.68s ==============================
+✔ 35/35 Passing in Airflow Problem-Solving Suite
+✔ 24/24 Passing in Great Expectations Data Quality Suite
 ```
 
 ---
 
 ## Production Deployment & Stack Compatibility
 - **Lakehouse Engines**: Native Delta Lake tables, Apache Spark (PySpark), Databricks Runtime, AWS Glue, Amazon EMR.
-- **Data Warehouses**: Snowflake, BigQuery, PostgreSQL, DuckDB.
-- **Orchestration**: Apache Airflow, Dagster, Prefect, GitHub Actions.
-- **Observability**: Static HTML Data Docs, Slack Webhooks, Zoho Cliq Bot Cards.
-
+- **Data Warehouses**: Snowflake, BigQuery, PostgreSQL, DuckDB, SQLite.
+- **Orchestration**: Apache Airflow 2.x, Dagster, Prefect, GitHub Actions CI/CD.
+- **Observability**: Rich Terminal Dashboards, Slack Block Kit Cards, Zoho Cliq Webhooks, HTML Data Docs.
