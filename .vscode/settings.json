@@ -1,0 +1,10 @@
+{
+  "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
+  "python.analysis.extraPaths": [
+    "./airflow/01-retry-etl-dead-letter-queue/src",
+    "./airflow/02-dynamic-dag-factory/src",
+    "./airflow/03-sla-finance-pipeline/src",
+    "./airflow/04-idempotent-backfill-loader/src",
+    "./airflow/05-sensor-circuit-breaker/src"
+  ]
+}
