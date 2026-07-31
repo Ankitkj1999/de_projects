@@ -39,10 +39,13 @@ from circuit_breaker import CircuitBreaker
 from order_processor import process
 from warehouse_loader import load
 
-# Airflow compatibility layer
+# Compatibility layer supporting Airflow 3.x, Airflow 2.x, and standalone mock
 try:
     from airflow import DAG
-    from airflow.operators.python import PythonOperator, BranchPythonOperator
+    try:
+        from airflow.providers.standard.operators.python import PythonOperator, BranchPythonOperator
+    except ImportError:
+        from airflow.operators.python import PythonOperator, BranchPythonOperator
 except ImportError:
     class DAG:
         def __init__(self, dag_id: str, default_args: dict = None, schedule: str = None, **kwargs):

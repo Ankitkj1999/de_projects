@@ -43,10 +43,13 @@ from warehouse_loader import WarehouseLoader
 from idempotency_verifier import verify
 from audit_logger import log
 
-# Compatibility layer for environments without full apache-airflow package
+# Compatibility layer supporting Airflow 3.x, Airflow 2.x, and standalone mock
 try:
     from airflow import DAG
-    from airflow.operators.python import PythonOperator
+    try:
+        from airflow.providers.standard.operators.python import PythonOperator
+    except ImportError:
+        from airflow.operators.python import PythonOperator
 except ImportError:
     class DAG:
         def __init__(self, dag_id: str, default_args: dict = None, schedule: str = None, **kwargs):
