@@ -1,0 +1,67 @@
+name: Data Quality CI Gate
+
+on:
+  pull_request:
+    branches: [ main, master ]
+    paths:
+      - 'data/**'
+      - 'data-quality/**'
+      - 'models/**'
+  workflow_dispatch:
+
+jobs:
+  validate-data-contracts:
+    name: Run Great Expectations Suites
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Generate Baseline & Test Datasets
+        run: |
+          python data/generate_olist_data.py
+          python data/inject_corruptions.py
+
+      - name: Execute Project 1: Schema Drift Gate
+        run: |
+          python -m pytest data-quality/01-schema-drift-gate/tests/ -v
+
+      - name: Execute Project 2: Business Rules Validator
+        run: |
+          python -m pytest data-quality/02-business-rules-validator/tests/ -v
+
+      - name: Execute Project 3: Volume & Freshness Monitor
+        run: |
+          python -m pytest data-quality/03-volume-freshness-anomaly/tests/ -v
+
+      - name: Execute Project 4: Delta Lake Quarantine Engine
+        run: |
+          python -m pytest data-quality/04-delta-lake-quarantine/tests/ -v
+
+      - name: Execute Project 5: Profiling & Alerts
+        run: |
+          python -m pytest data-quality/05-automated-table-profiling/tests/ -v
+
+      - name: Build & Publish Data Docs Site
+        run: |
+          python data-quality/05-automated-table-profiling/demo.py
+
+      - name: Upload Data Docs Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: data-quality-docs
+          path: data-quality/05-automated-table-profiling/docs/site/
+          retention-days: 14
+
